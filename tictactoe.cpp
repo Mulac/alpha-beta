@@ -6,8 +6,8 @@ const int* TicTacToe::getBoard() const {
     return board;
 }
 
-const std::list<int>& TicTacToe::legalActions() const {
-    std::list<int> actions = {};
+const std::list<int> TicTacToe::legalActions() const {
+    std::list<int> actions;
     const int* board = getBoard();
     for (int i=0; i<9; i++){
         if (!board[i])
@@ -25,6 +25,7 @@ int TicTacToe::makeMove(int move) {
     // Make move and switch player
     board[move] = player;
     player *= -1;
+    return 1;
 }
 
 bool TicTacToe::hasWon(int player) const {
