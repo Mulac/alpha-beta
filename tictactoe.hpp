@@ -10,7 +10,7 @@ public:
     bool isEnd() const;
     int winner() const;
     int makeMove(int move);
-    const std::list<int>& legalActions() const;
+    const std::list<int> legalActions() const;
     const int* getBoard() const;
 
 private:
