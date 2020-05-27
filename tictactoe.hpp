@@ -4,7 +4,7 @@
 #include <iostream>
 #include <list>
 
-#include "alphabeta.h"
+#include "alphabeta.hpp"
 
 class TicTacToe : public SearchableGame { 
 public:
@@ -18,7 +18,8 @@ public:
         return Game(new TicTacToe(*this));
     }
 
-    bool isEnd() const;
+    bool isTerminal() const;
+    int utility() const;
     int winner() const;
     short getPlayer() const;
     bool makeMove(int move);
@@ -30,9 +31,9 @@ private:
     int board[9] = {};
     int magic[9] = {2, 7, 6, 9, 5, 1, 4, 3, 8};
 
-    bool hasWon(int player) const;
+    bool hasWon(short player) const;
 };
 
-std::ostream& operator<< (std::ostream& output, Game game);
+std::ostream& operator<< (std::ostream& output, TicTacToe& game);
 
 #endif

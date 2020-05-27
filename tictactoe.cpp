@@ -5,6 +5,18 @@ const int* TicTacToe::getBoard() const {
     return board;
 }
 
+int TicTacToe::winner() const {
+    return (hasWon(1)) ? 1 : (hasWon(-1)) ? -1 : 0;
+}
+
+bool TicTacToe::isTerminal() const {
+    return (legalActions().empty() || winner()) ? true : false;
+}
+
+short TicTacToe::getPlayer() const{
+    return player;
+}
+
 const std::list<int> TicTacToe::legalActions() const {
     std::list<int> actions;
     const int* board = getBoard();
@@ -15,23 +27,23 @@ const std::list<int> TicTacToe::legalActions() const {
     return actions;
 }
 
+int TicTacToe::utility() const {
+    return (getPlayer() == winner()) ? 1 : (!winner()) ? 0 : -1;
+}
+
 bool TicTacToe::makeMove(int move) {
     // Check move is legal
     auto actions = legalActions();
     if (std::find(actions.begin(), actions.end(), move) == actions.end())
-        return -1;
+        return false;
     
     // Make move and switch player
     board[move] = player;
     player *= -1;
-    return 1;
+    return true;
 }
 
-int TicTacToe::winner() const {
-    return (hasWon(1)) ? 1 : (hasWon(-1)) ? -1 : 0;
-}
-
-bool TicTacToe::hasWon(int player) const {
+bool TicTacToe::hasWon(short player) const {
     for (int i = 0; i < 9; i++)
         for (int j = 0; j < 9; j++)
             for (int k = 0; k < 9; k++)
@@ -42,20 +54,12 @@ bool TicTacToe::hasWon(int player) const {
     return false;
 }
 
-bool TicTacToe::isEnd() const {
-    return (legalActions().empty() || winner()) ? true : false;
-}
-
-short TicTacToe::getPlayer() const{
-    return player;
-}
-
-char toSym(int player) {
+char toSym(short player) {
     return (player > 0) ? 'X' : (player < 0) ? 'O' : '-';
 }
 
-std::ostream& operator<< (std::ostream& output, Game game){
-    const int* board = game->getBoard();
+std::ostream& operator<< (std::ostream& output, TicTacToe& game){
+    const int* board = game.getBoard();
     
     output << toSym(board[0]) << ' ' << toSym(board[1]) << ' ' << toSym(board[2]) << std::endl;
     output << toSym(board[3]) << ' ' << toSym(board[4]) << ' ' << toSym(board[5]) << std::endl;
@@ -65,28 +69,24 @@ std::ostream& operator<< (std::ostream& output, Game game){
 }
 
 int main(){
-    TicTacToe t;
-    Game game = t.create();
+    TicTacToe game;
 
-    while (!game->isEnd()){
+    while (!game.isTerminal()){
         int move;
 
-        std::cout << "player: " << game->getPlayer() << std::endl;
-        std::cout << game;
+        std::cout << "player: " << game.getPlayer() << std::endl;
+        
 
-        if (game->getPlayer() < 0) {
+        if (game.getPlayer() < 0)
+            std::cin >> move;
+        else
+            move = alphabeta(game.clone());
+
+        while (!game.makeMove(move)){
+            std::cout << "[ERROR] " << move << " not legal";
             std::cin >> move;
         }
-        else {
-            move = alphabeta(game);
-        }
 
-        if (!game->makeMove(move)){
-            std::cout << "error";
-            return 1;
-        }
-
-
-        std::cout << "move: " << move << std::endl;
+        std::cout << game << std::endl;
     }
 }

@@ -1,13 +1,10 @@
-#include "alphabeta.h"
+#include "alphabeta.hpp"
 #include <iostream>
 
-std::pair<int, int> negamax(Game _game) {
-    Game game = _game->clone();
-    
-    if (game->isEnd()) {
-        int value = (game->getPlayer() == game->winner()) ? 1 : (!game->winner()) ? 0 : -1;
-        return std::pair<int, int>(NULL, value);
-    }
+std::pair<int, int> negamax(Game game) {
+
+    if (game->isTerminal())
+        return std::pair<int, int>(NULL, game->utility());
 
     std::pair<int, int> best(NULL, INT32_MIN);
 
@@ -20,15 +17,11 @@ std::pair<int, int> negamax(Game _game) {
             best.first = move;
             best.second = result.second*-1;
         }
-
     }
 
     return best;
 }
 
 int alphabeta(Game game){
-    
-    auto dec = negamax(game);
-    
-    return dec.first;
+    return negamax(game).first;
 }
