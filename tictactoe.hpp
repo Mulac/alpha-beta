@@ -4,12 +4,27 @@
 #include <iostream>
 #include <list>
 
+class SearchableGame {
+public:
+    SearchableGame() {}
+    virtual bool isEnd() const = 0;
+    virtual int winner() const = 0;
+    virtual int makeMove(int move) = 0;
+    virtual const std::list<int> legalActions() const = 0;
+    virtual const int* getBoard() const = 0;
+
+    virtual SearchableGame * clone () const = 0;
+
+private:
+};
+
 class TicTacToe {
 public:
     TicTacToe() : player(1) {}
     bool isEnd() const;
     int winner() const;
-    int makeMove(int move);
+    short getPlayer() const;
+    bool makeMove(int move);
     const std::list<int> legalActions() const;
     const int* getBoard() const;
 

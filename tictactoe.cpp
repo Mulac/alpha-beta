@@ -16,7 +16,7 @@ const std::list<int> TicTacToe::legalActions() const {
     return actions;
 }
 
-int TicTacToe::makeMove(int move) {
+bool TicTacToe::makeMove(int move) {
     // Check move is legal
     auto actions = legalActions();
     if (std::find(actions.begin(), actions.end(), move) == actions.end())
@@ -26,6 +26,10 @@ int TicTacToe::makeMove(int move) {
     board[move] = player;
     player *= -1;
     return 1;
+}
+
+int TicTacToe::winner() const {
+    return (hasWon(1)) ? 1 : (hasWon(-1)) ? -1 : 0;
 }
 
 bool TicTacToe::hasWon(int player) const {
@@ -40,7 +44,11 @@ bool TicTacToe::hasWon(int player) const {
 }
 
 bool TicTacToe::isEnd() const {
-    return (legalActions().empty()) ? true : false;
+    return (legalActions().empty() || winner()) ? true : false;
+}
+
+short TicTacToe::getPlayer() const{
+    return player;
 }
 
 char toSym(int player) {
@@ -55,9 +63,4 @@ std::ostream& operator<< (std::ostream& output, const TicTacToe& game){
     output << toSym(board[6]) << ' ' << toSym(board[7]) << ' ' << toSym(board[8]) << std::endl;
 
     return output;
-}
-
-int main(){
-    TicTacToe t;
-    std::cout << t << std::endl;
 }

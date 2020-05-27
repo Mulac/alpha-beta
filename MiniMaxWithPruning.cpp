@@ -10,6 +10,8 @@ int main()
   return 0;
 }
 
+SearchableGame::successorStates
+
 
 Action SearchableGame::AlphaBetaSearch(const State& state) const
 {

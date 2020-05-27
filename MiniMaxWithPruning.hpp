@@ -26,6 +26,8 @@ public:
   virtual std::vector<std::pair<State, Action>> successorStates(const State& state) const = 0;
   virtual bool terminalState(const State& state) const = 0;
   virtual int getUtility(const State& state) const = 0;
+  virtual bool makeMove(Action move) = 0;
+  virtual const std::list<Action> legalActions() const = 0;
 
   Action AlphaBetaSearch(const State& state) const;
 
