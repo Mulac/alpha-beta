@@ -1,19 +1,19 @@
-#include <utility>
+#include "alphabeta.h"
+#include <iostream>
 
-#include "tictactoe.hpp"
-
-
-std::pair<int, int> negamax(TicTacToe game) {
-    if (game.isEnd()) {
-        int value = (game.getPlayer() == game.winner()) ? 1 : (!game.winner()) ? 0 : -1;
+std::pair<int, int> negamax(Game _game) {
+    Game game = _game->clone();
+    
+    if (game->isEnd()) {
+        int value = (game->getPlayer() == game->winner()) ? 1 : (!game->winner()) ? 0 : -1;
         return std::pair<int, int>(NULL, value);
     }
 
     std::pair<int, int> best(NULL, INT32_MIN);
 
-    for (auto const& move : game.legalActions()) {
-        TicTacToe imagine = game;
-        imagine.makeMove(move);
+    for (auto const& move : game->legalActions()) {
+        Game imagine = game->clone();
+        imagine->makeMove(move);
         std::pair<int, int> result = negamax(imagine);
 
         if (result.second*-1 > best.second) {
@@ -26,36 +26,9 @@ std::pair<int, int> negamax(TicTacToe game) {
     return best;
 }
 
-int alphabeta(TicTacToe& game){
+int alphabeta(Game game){
+    
     auto dec = negamax(game);
-    std::cout << "confidence: " << dec.second << std::endl;
+    
     return dec.first;
-}
-
-
-
-int main(){
-    TicTacToe game;
-
-    while (!game.isEnd()){
-        int move;
-
-        std::cout << "player: " << game.getPlayer() << std::endl;
-        std::cout << game;
-
-        if (game.getPlayer() < 0) {
-            std::cin >> move;
-        }
-        else {
-            move = alphabeta(game);
-        }
-
-        if (!game.makeMove(move)){
-            std::cout << "error";
-            return 1;
-        }
-
-
-        std::cout << "move: " << move << std::endl;
-    }
 }

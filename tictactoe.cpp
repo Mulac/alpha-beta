@@ -1,5 +1,4 @@
 #include "tictactoe.hpp"
-
 #include <algorithm>
 
 const int* TicTacToe::getBoard() const {
@@ -55,12 +54,39 @@ char toSym(int player) {
     return (player > 0) ? 'X' : (player < 0) ? 'O' : '-';
 }
 
-std::ostream& operator<< (std::ostream& output, const TicTacToe& game){
-    const int* board = game.getBoard();
-
+std::ostream& operator<< (std::ostream& output, Game game){
+    const int* board = game->getBoard();
+    
     output << toSym(board[0]) << ' ' << toSym(board[1]) << ' ' << toSym(board[2]) << std::endl;
     output << toSym(board[3]) << ' ' << toSym(board[4]) << ' ' << toSym(board[5]) << std::endl;
     output << toSym(board[6]) << ' ' << toSym(board[7]) << ' ' << toSym(board[8]) << std::endl;
 
     return output;
+}
+
+int main(){
+    TicTacToe t;
+    Game game = t.create();
+
+    while (!game->isEnd()){
+        int move;
+
+        std::cout << "player: " << game->getPlayer() << std::endl;
+        std::cout << game;
+
+        if (game->getPlayer() < 0) {
+            std::cin >> move;
+        }
+        else {
+            move = alphabeta(game);
+        }
+
+        if (!game->makeMove(move)){
+            std::cout << "error";
+            return 1;
+        }
+
+
+        std::cout << "move: " << move << std::endl;
+    }
 }

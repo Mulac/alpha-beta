@@ -4,23 +4,20 @@
 #include <iostream>
 #include <list>
 
-class SearchableGame {
-public:
-    SearchableGame() {}
-    virtual bool isEnd() const = 0;
-    virtual int winner() const = 0;
-    virtual int makeMove(int move) = 0;
-    virtual const std::list<int> legalActions() const = 0;
-    virtual const int* getBoard() const = 0;
+#include "alphabeta.h"
 
-    virtual SearchableGame * clone () const = 0;
-
-private:
-};
-
-class TicTacToe {
+class TicTacToe : public SearchableGame { 
 public:
     TicTacToe() : player(1) {}
+    virtual ~TicTacToe() {}
+
+    Game create() const {
+        return Game(new TicTacToe());
+    }
+    Game clone() const {
+        return Game(new TicTacToe(*this));
+    }
+
     bool isEnd() const;
     int winner() const;
     short getPlayer() const;
@@ -36,6 +33,6 @@ private:
     bool hasWon(int player) const;
 };
 
-std::ostream& operator<< (std::ostream& output, const TicTacToe& game);
+std::ostream& operator<< (std::ostream& output, Game game);
 
 #endif
