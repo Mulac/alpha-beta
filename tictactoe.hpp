@@ -19,7 +19,7 @@ public:
     }
 
     bool isTerminal() const;
-    int utility() const;
+    double utility() const;
     int winner() const;
     short getPlayer() const;
     bool makeMove(int move);

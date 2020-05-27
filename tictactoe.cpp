@@ -27,7 +27,7 @@ const std::list<int> TicTacToe::legalActions() const {
     return actions;
 }
 
-int TicTacToe::utility() const {
+double TicTacToe::utility() const {
     return (getPlayer() == winner()) ? 1 : (!winner()) ? 0 : -1;
 }
 

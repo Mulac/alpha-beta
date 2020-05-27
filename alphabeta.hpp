@@ -12,7 +12,7 @@ public:
 
     virtual const std::list<int> legalActions() const = 0;
     virtual bool isTerminal() const = 0;
-    virtual int utility() const = 0;
+    virtual double utility() const = 0;
     virtual bool makeMove(int move) = 0;
 };
 
