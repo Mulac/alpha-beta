@@ -17,28 +17,39 @@ short TicTacToe::getPlayer() const{
     return player;
 }
 
-const std::list<int> TicTacToe::legalActions() const {
-    std::list<int> actions;
-    const int* board = getBoard();
-    for (int i=0; i<9; i++){
-        if (!board[i])
-            actions.push_back(i);
-    }
-    return actions;
-}
-
 double TicTacToe::utility() const {
     return (getPlayer() == winner()) ? 1 : (!winner()) ? 0 : -1;
 }
 
-bool TicTacToe::makeMove(int move) {
+const std::list<Action> TicTacToe::legalActions() const {
+    std::list<Action> actions;
+    const int* board = getBoard();
+    for (int i=0; i<9; i++){
+        if (!board[i]) {
+            Action a = std::make_shared<TTTAction>(i);
+            actions.push_back(a);
+        }
+    }
+    return actions;
+}
+
+bool TicTacToe::makeMove(Action move) {
+    std::shared_ptr<TTTAction> action = std::dynamic_pointer_cast<TTTAction>(move);
     // Check move is legal
-    auto actions = legalActions();
-    if (std::find(actions.begin(), actions.end(), move) == actions.end())
+    bool legal = false;
+    for (auto a : legalActions()) {
+        std::shared_ptr<TTTAction> legalAction = std::dynamic_pointer_cast<TTTAction>(a);
+        if (legalAction->move == action->move) {
+            legal = true;
+            break;
+        }
+    }
+
+    if (!legal)
         return false;
-    
+        
     // Make move and switch player
-    board[move] = player;
+    board[action->move] = player;
     player *= -1;
     return true;
 }
@@ -68,23 +79,26 @@ std::ostream& operator<< (std::ostream& output, TicTacToe& game){
     return output;
 }
 
-int main(){
+int main(int argc, char ** argv){
     TicTacToe game;
 
     while (!game.isTerminal()){
-        int move;
+        Action move;
 
         std::cout << "player: " << game.getPlayer() << std::endl;
-        
 
-        if (game.getPlayer() < 0)
-            std::cin >> move;
-        else
+        if (game.getPlayer() < 0){
+            int input;
+            std::cin >> input;
+            move = std::make_shared<TTTAction>(input);
+        }
+        else {
             move = alphabeta(game.clone());
+        }
 
         while (!game.makeMove(move)){
             std::cout << "[ERROR] " << move << " not legal";
-            std::cin >> move;
+            return -1;
         }
 
         std::cout << game << std::endl;

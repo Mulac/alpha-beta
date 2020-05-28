@@ -6,6 +6,11 @@
 
 #include "alphabeta.hpp"
 
+struct TTTAction : public GameAction {
+    int move;
+    TTTAction(int m) : move(m) {}
+};
+
 class TicTacToe : public SearchableGame { 
 public:
     TicTacToe() : player(1) {}
@@ -22,8 +27,8 @@ public:
     double utility() const;
     int winner() const;
     short getPlayer() const;
-    bool makeMove(int move);
-    const std::list<int> legalActions() const;
+    bool makeMove(Action move);
+    const std::list<Action> legalActions() const;
     const int* getBoard() const;
 
 private:
