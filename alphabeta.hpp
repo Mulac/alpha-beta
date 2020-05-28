@@ -21,6 +21,4 @@ public:
     virtual bool makeMove(Action move) = 0;
 };
 
-typedef std::shared_ptr<SearchableGame> Game;
-
-Action alphabeta(Game game);
+Action alphabeta(SearchableGame::Game game, int depth);

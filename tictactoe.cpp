@@ -47,7 +47,7 @@ bool TicTacToe::makeMove(Action move) {
 
     if (!legal)
         return false;
-        
+
     // Make move and switch player
     board[action->move] = player;
     player *= -1;
@@ -69,7 +69,7 @@ char toSym(short player) {
     return (player > 0) ? 'X' : (player < 0) ? 'O' : '-';
 }
 
-std::ostream& operator<< (std::ostream& output, TicTacToe& game){
+std::ostream& operator<< (std::ostream& output, const TicTacToe& game){
     const int* board = game.getBoard();
     
     output << toSym(board[0]) << ' ' << toSym(board[1]) << ' ' << toSym(board[2]) << std::endl;
@@ -77,30 +77,4 @@ std::ostream& operator<< (std::ostream& output, TicTacToe& game){
     output << toSym(board[6]) << ' ' << toSym(board[7]) << ' ' << toSym(board[8]) << std::endl;
 
     return output;
-}
-
-int main(int argc, char ** argv){
-    TicTacToe game;
-
-    while (!game.isTerminal()){
-        Action move;
-
-        std::cout << "player: " << game.getPlayer() << std::endl;
-
-        if (game.getPlayer() < 0){
-            int input;
-            std::cin >> input;
-            move = std::make_shared<TTTAction>(input);
-        }
-        else {
-            move = alphabeta(game.clone());
-        }
-
-        while (!game.makeMove(move)){
-            std::cout << "[ERROR] " << move << " not legal";
-            return -1;
-        }
-
-        std::cout << game << std::endl;
-    }
 }

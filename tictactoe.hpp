@@ -23,13 +23,14 @@ public:
         return Game(new TicTacToe(*this));
     }
 
-    bool isTerminal() const;
-    double utility() const;
-    int winner() const;
-    short getPlayer() const;
     bool makeMove(Action move);
     const std::list<Action> legalActions() const;
+    bool isTerminal() const;
+    double utility() const;
+
     const int* getBoard() const;
+    short getPlayer() const;
+    int winner() const;
 
 private:
     short player;
@@ -39,6 +40,6 @@ private:
     bool hasWon(short player) const;
 };
 
-std::ostream& operator<< (std::ostream& output, TicTacToe& game);
+std::ostream& operator<< (std::ostream& output, const TicTacToe& game);
 
 #endif
