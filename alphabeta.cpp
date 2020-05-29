@@ -1,4 +1,4 @@
-#include "alphabeta.hpp"
+#include "include/alphabeta.hpp"
 #include <algorithm>
 #include <iostream>
 #include <limits>

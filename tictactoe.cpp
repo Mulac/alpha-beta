@@ -1,4 +1,4 @@
-#include "tictactoe.hpp"
+#include "include/tictactoe.hpp"
 #include <algorithm>
 
 const int* TicTacToe::getBoard() const {
